@@ -1,60 +1,70 @@
 #!/bin/bash
-
+NS=$( cat /etc/xray/dns )
+PUB=$( cat /etc/slowdns/server.pub )
+domain=$(cat /etc/xray/domain)
+#color
+grenbo="\e[92;1m"
+NC='\e[0m'
 #install
-rm -rf xolpanel.sh
+cd /root
+rm -rf regis
+#install
 apt update && apt upgrade
 apt install python3 python3-pip git
-git clone https://github.com/zidanvpn/xolpanel.git
-unzip xolpanel/xolpanel.zip
-pip3 install -r xolpanel/requirements.txt
+cd /root
+wget https://raw.githubusercontent.com/zidanvpn/xolpanel/main/regis.zip
+7z x regis.zip
+rm -rf regis.zip
+pip3 install -r regis/requirements.txt
 pip3 install pillow
 
 #isi data
 echo ""
+echo -e "\033[1;36mâ”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\033[0m"
+echo -e " \e[1;97;101m          ADD BOT PANEL          \e[0m"
+echo -e "\033[1;36mâ”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\033[0m"
+echo -e "${grenbo}Tutorial Creat Bot and ID Telegram${NC}"
+echo -e "${grenbo}[*] Creat Bot and Token Bot : @BotFather${NC}"
+echo -e "${grenbo}[*] Info Id Telegram : @MissRose_bot , perintah /info${NC}"
+echo -e "${grenbo}[*] Bot By AndyYuda KLMPK PROJECT${NC}"
+echo -e "\033[1;36mâ”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”\033[0m"
 read -e -p "[*] Input your Bot Token : " bottoken
 read -e -p "[*] Input Your Id Telegram :" admin
-read -e -p "[*] Input Your Subdomain :" domain
-read -e -p "[*] Input Your NSdomain :" sldomain
-echo -e BOT_TOKEN='"'$bottoken'"' >> /root/xolpanel/var.txt
-echo -e ADMIN='"'$admin'"' >> /root/xolpanel/var.txt
-echo -e DOMAIN='"'$domain'"' >> /root/xolpanel/var.txt
-echo -e SLDOMAIN='"'$sldomain'"' >> /root/xolpanel/var.txt
+echo -e BOT_TOKEN='"'$bottoken'"' >> /root/regis/var.txt
+echo -e ADMIN='"'$admin'"' >> /root/regis/var.txt
+echo -e DOMAIN='"'$domain'"' >> /root/regis/var.txt
+echo -e PUB='"'$PUB'"' >> /root/regis/var.txt
+echo -e HOST='"'$NS'"' >> /root/regis/var.txt
 clear
-echo "Done"
-echo "Your Data Bot"
-echo -e "==============================="
-echo "Bot Token     : $bottoken"
-echo "Id Telegram   : $admin"
-echo "Subdomain     : $domain"
-echo "NSdomain      : $sldomain"
 
-echo -e "==============================="
-echo "Setting done Please wait 10s"
-sleep 10
-
-cat > /etc/systemd/system/xolpanel.service << END
+cat > /etc/systemd/system/regis.service << END
 [Unit]
-Description=Simple XolPanel - @XolPanel
+Description=Simple register - @Andyyuda
 After=network.target
 
 [Service]
 WorkingDirectory=/root
-ExecStart=/usr/bin/python3 -m xolpanel
+ExecStart=/usr/bin/python3 -m regis
 Restart=always
 
 [Install]
 WantedBy=multi-user.target
 END
 
-systemctl start xolpanel 
-systemctl enable xolpanel
-
+systemctl start regis 
+systemctl enable regis
+cd /root
+rm -rf klmpkbot.sh
+echo "Done"
+echo "Your Data Bot"
+echo -e "==============================="
+echo "Token Bot         : $bottoken"
+echo "Admin          : $admin"
+echo "Domain        : $domain"
+echo "Pub            : $PUB"
+echo "Host           : $NS"
+echo -e "==============================="
+echo "Setting done"
 clear
 
-echo -e "==============================================="
 echo " Installations complete, type /menu on your bot"
-echo -e "==============================================="
-read -n 1 -s -r -p "Press any key to Reboot"
-rm -rf xolpanel.sh
-clear
-reboot
