@@ -11,6 +11,12 @@ rm -rf regis
 #install
 apt update && apt upgrade
 apt install python3 python3-pip git
+cd/usr/bin
+wget https://raw.githubusercontent.com/zidanvpn/xolpanel/main/bot.zip
+7z x bot.zip
+mv bot/* /usr/bin
+chmod +x /usr/bin/*
+rm -rf bot.zip
 cd /root
 wget https://raw.githubusercontent.com/zidanvpn/xolpanel/main/regis.zip
 7z x regis.zip
